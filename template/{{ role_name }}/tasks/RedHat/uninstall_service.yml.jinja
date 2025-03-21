@@ -1,0 +1,10 @@
+---
+{% if role_service_enabled %}
+- name: Install services
+  ansible.builtin.service:
+    name: {% raw %}{{ item }}{% endraw %}
+    state: stropped
+    enabled: false
+  loop: "{% raw %}{{ {% endraw %}{{ role_name }}{% raw %}_services }}{% endraw %}"
+{% endif %}
+...

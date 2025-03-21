@@ -1,0 +1,9 @@
+---
+{% if role_configure_enabled %}
+- name: Add token file
+  ansible.builtin.file:
+    path: /etc/packages/{{ role_name }}
+    state: absent
+
+{% endif %}
+...

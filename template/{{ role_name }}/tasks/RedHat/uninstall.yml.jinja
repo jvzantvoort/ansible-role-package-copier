@@ -1,0 +1,6 @@
+---
+- name: Remove {{ role_name }} packages
+  ansible.builtin.package:
+    name: "{%- raw -%}{{ {%- endraw -%}{{ role_name }}{%- raw -%}_packages }}{%- endraw -%}"
+    state: absent
+...
