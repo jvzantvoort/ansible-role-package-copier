@@ -1,0 +1,21 @@
+# questions
+role_name:
+  type: str
+  help: name of the role
+
+role_configure_enabled:
+  type: bool
+  default: false
+  help: Does the package have configure tasks
+
+role_service_enabled:
+  type: bool
+  default: false
+  help: Does the package have a service
+
+role_service_name:
+  type: str
+  help: What is the name of the service
+  when: "{{ role_service_enabled }}"
+
+_subdirectory: template

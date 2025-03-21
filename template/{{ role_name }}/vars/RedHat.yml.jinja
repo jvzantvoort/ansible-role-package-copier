@@ -1,0 +1,9 @@
+---
+{{ role_name }}_packages:
+  - {{ role_name }}
+{% if role_service_enabled %}
+{{ role_name }}_services:
+  - {{ role_service_name }}
+{% endif %}
+...
+

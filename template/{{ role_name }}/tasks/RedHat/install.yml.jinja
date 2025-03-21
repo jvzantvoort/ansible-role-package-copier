@@ -1,0 +1,6 @@
+---
+- name: Install {{ role_name }} packages
+  ansible.builtin.package:
+    name: "{%- raw -%}{{ {%- endraw -%}{{ role_name }}{%- raw -%}_packages }}{%- endraw -%}"
+    state: "{%- raw -%}{{ {%- endraw -%}{{ role_name }}{%- raw -%}_package_state }}{%- endraw -%}"
+...

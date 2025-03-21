@@ -1,0 +1,33 @@
+# {{ role_name }} package installation
+
+Install and manage the {{ role_name }} package
+
+## Role Variables
+
+* {{ role_name }}_enabled
+* {{ role_name }}_package_state
+
+## Example Playbook
+
+```yaml
+---
+- name: 
+  hosts: all
+
+  tasks:
+
+  - name: Setup {{ role_name }}
+      ansible.builtin.include_role:
+      name: jdc.desktop.{{ role_name }}
+...
+```
+
+License
+-------
+
+{{ role_license | default('BSD') }}
+
+Author Information
+------------------
+
+{{ role_author | default('the author') }}

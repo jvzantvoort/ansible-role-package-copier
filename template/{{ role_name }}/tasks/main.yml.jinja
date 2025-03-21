@@ -1,0 +1,82 @@
+---
+{% raw %}
+- name: Platform specific vars
+  ansible.builtin.include_vars:
+    file: "{{item}}"
+  with_first_found:
+    - "{{ansible_os_family}}-{{ansible_distribution_major_version}}.yml"
+    - "{{ansible_os_family}}.yml"
+{% endraw %}
+
+- name: Validate settings
+  ansible.builtin.assert:
+    that:
+      - {{ role_name }}_enabled == {{ role_name }}_disabled
+    fail_msg: "{{ role_name }}_enabled and {{ role_name }}_disabled have the same value"
+
+- name: Add package {{ role_name }}
+  become: true
+  when: {{ role_name }}_enabled
+  block:
+{% raw %}
+    - name: Platform specific install tasks
+      ansible.builtin.include_tasks:
+        file: "{{ item }}"
+      with_first_found:
+        - "{{ansible_os_family}}/install-{{ansible_distribution_major_version}}.yml"
+        - "{{ansible_os_family}}/install.yml"
+{% endraw %}
+{% if role_configure_enabled %}
+{% raw %}
+    - name: Platform specific configure tasks
+      ansible.builtin.include_tasks:
+        file: "{{ item }}"
+      with_first_found:
+        - "{{ansible_os_family}}/configure-{{ansible_distribution_major_version}}.yml"
+        - "{{ansible_os_family}}/configure.yml"
+{% endraw %}
+{% endif %}
+{% if role_service_enabled %}
+{% raw %}
+    - name: Platform specific service tasks
+      ansible.builtin.include_tasks:
+        file: "{{ item }}"
+      with_first_found:
+        - "{{ansible_os_family}}/install_service-{{ansible_distribution_major_version}}.yml"
+        - "{{ansible_os_family}}/install_service.yml"
+{% endraw %}
+{% endif %}
+- name: Remove package {{ role_name }}
+  become: true
+  when: {{ role_name }}_disabled
+  block:
+
+{% raw %}
+    - name: Platform specific install tasks
+      ansible.builtin.include_tasks:
+        file: "{{ item }}"
+      with_first_found:
+        - "{{ansible_os_family}}/uninstall-{{ansible_distribution_major_version}}.yml"
+        - "{{ansible_os_family}}/uninstall.yml"
+{% endraw %}
+{% if role_configure_enabled %}
+{% raw %}
+    - name: Platform specific configure tasks
+      ansible.builtin.include_tasks:
+        file: "{{ item }}"
+      with_first_found:
+        - "{{ansible_os_family}}/unconfigure-{{ansible_distribution_major_version}}.yml"
+        - "{{ansible_os_family}}/unconfigure.yml"
+{% endraw %}
+{% endif %}
+{% if role_service_enabled %}
+{% raw %}
+    - name: Platform specific service tasks
+      ansible.builtin.include_tasks:
+        file: "{{ item }}"
+      with_first_found:
+        - "{{ansible_os_family}}/uninstall_service-{{ansible_distribution_major_version}}.yml"
+        - "{{ansible_os_family}}/uninstall_service.yml"
+{% endraw %}
+{% endif %}
+...

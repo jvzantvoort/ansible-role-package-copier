@@ -1,0 +1,12 @@
+---
+{% if role_configure_enabled %}
+- name: Add token file
+  ansible.builtin.template:
+    content: "updated: {% raw %}{{ ansible_date_time.date }}{% endraw %}"
+    dest: /etc/packages/{{ role_name }}
+    owner: root
+    group: root
+    mode: '0644'
+
+{% endif %}
+...
